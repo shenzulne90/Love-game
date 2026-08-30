@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0,user-scalable=no">
+
+<title>Do You Love Me?</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+}
+
+/* FIRST PAGE */
+
+#question{
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #ffd9eb,
+        #ff91be
+    );
+}
+
+.box{
+    width:88%;
+    max-width:380px;
+    padding:30px 20px;
+    text-align:center;
+    background:#fff;
+    border-radius:28px;
+    box-shadow:
+        0 15px 40px
+        rgba(130,30,80,.25);
+}
+
+.box h1{
+    color:#d34d8b;
+    font-size:29px;
+    margin-bottom:10px;
+}
+
+.box p{
+    color:#856073;
+    margin-bottom:22px;
+}
+
+.btn{
+    border:2px solid #efb1cd;
+    border-radius:25px;
+    padding:13px 28px;
+    margin:5px;
+    background:#fff;
+    color:#cd4c89;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:transform .3s ease;
+}
+
+#yes{
+    position:relative;
+    z-index:20;
+    transform-origin:center;
+}
+
+
+/* GAME */
+
+#game{
+    display:none;
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            #ffd8e9,
+            #ffafd0 40%,
+            #ff83b6
+        );
+}
+
+.title{
+    position:absolute;
+    top:4%;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:clamp(28px,8vw,42px);
+    font-weight:900;
+    text-shadow:
+        0 0 10px #ff1987,
+        0 0 25px #ff1987;
+    z-index:5;
+}
+
+.instruction{
+    position:absolute;
+    top:12%;
+    width:100%;
+    text-align:center;
+    color:white;
+    font-size:14px;
+    font-weight:bold;
+    z-index:5;
+}
+
+
+/* HEART */
+
+#heart{
+    position:absolute;
+    left:50%;
+    top:27%;
+    width:105px;
+    height:105px;
+    background:#ff258f;
+    transform:
+        translateX(-50%)
+        rotate(-45deg);
+    filter:
+        drop-shadow(
+            0 0 20px
+            #ff1588
+        );
+    animation:pulse 1s infinite;
+    z-index:10;
+    pointer-events:none;
+}
+
+#heart:before,
+#heart:after{
+    content:"";
+    position:absolute;
+    width:105px;
+    height:105px;
+    background:#ff258f;
+    border-radius:50%;
+}
+
+#heart:before{
+    top:-52px;
+    left:0;
+}
+
+#heart:after{
+    top:0;
+    left:52px;
+}
+
+@keyframes pulse{
+    50%{
+        transform:
+            translateX(-50%)
+            rotate(-45deg)
+            scale(1.08);
+    }
+}
+
+
+/* AIM AREA */
+
+#aim{
+    position:absolute;
+    inset:15% 0 27% 0;
+    z-index:20;
+    touch-action:none;
+}
+
+
+/* BOW */
+
+#bow{
+    position:absolute;
+    left:50%;
+    bottom:12%;
+    width:120px;
+    height:150px;
+
+    transform:
+        translateX(-50%)
+        rotate(-90deg);
+
+    transform-origin:28px 75px;
+
+    z-index:40;
+    pointer-events:none;
+}
+
+.bowcurve{
+    position:absolute;
+    left:16px;
+    top:0;
+    width:78px;
+    height:150px;
+    border:8px solid #623c4e;
+    border-left:0;
+    border-radius:0 80px 80px 0;
+}
+
+.bowtip{
+    position:absolute;
+    left:10px;
+    width:30px;
+    height:8px;
+    background:#623c4e;
+    border-radius:5px;
+}
+
+.bowtip.top{
+    top:0;
+}
+
+.bowtip.bottom{
+    bottom:0;
+}
+
+
+/* ARROW
+   Walang hiwalay na puting line.
+   Arrow lang mismo ang gumagalaw.
+*/
+
+#arrow{
+    position:absolute;
+    left:25px;
+    top:72px;
+    width:120px;
+    height:5px;
+    background:#4b3741;
+    transform-origin:left center;
+}
+
+#arrow:before{
+    content:"";
+    position:absolute;
+    right:-16px;
+    top:-6px;
+    border-top:8px solid transparent;
+    border-bottom:8px solid transparent;
+    border-left:18px solid #4b3741;
+}
+
+#arrow:after{
+    content:"";
+    position:absolute;
+    left:0;
+    top:-6px;
+    width:22px;
+    height:17px;
+    border-top:3px solid #e45b96;
+    border-bottom:3px solid #e45b96;
+}
+
+
+/* AIM LINE */
+
+#line{
+    display:none;
+}
+
+
+/* SHOOT */
+
+#shootWrap{
+    position:absolute;
+    left:50%;
+    bottom:3%;
+    transform:translateX(-50%);
+    z-index:100;
+}
+
+#shoot{
+    width:150px;
+}
+
+
+/* MISS */
+
+#miss{
+    display:none;
+    position:absolute;
+    inset:0;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    color:white;
+    background:rgba(75,25,55,.94);
+    z-index:500;
+}
+
+#miss h2{
+    font-size:
+        clamp(40px,12vw,65px);
+    margin-bottom:10px;
+}
+
+
+/* WIN */
+
+#win{
+    display:none;
+    position:absolute;
+    inset:0;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    color:white;
+    background:
+        radial-gradient(
+            circle,
+            #ffd9ea,
+            #ff9bc5,
+            #ff5c9e
+        );
+    z-index:500;
+}
+
+#win h2{
+    width:90%;
+    font-size:
+        clamp(30px,9vw,55px);
+    text-shadow:
+        0 0 10px #ff1588,
+        0 0 25px #ff1588;
+    animation:winPulse 1s infinite;
+}
+
+#win p{
+    margin-top:15px;
+    font-size:21px;
+    font-weight:bold;
+}
+
+@keyframes winPulse{
+    50%{
+        transform:scale(1.07);
+    }
+}
+
+
+/* BROKEN HEART */
+
+.piece{
+    position:fixed;
+    width:105px;
+    height:105px;
+    background:#ff258f;
+    z-index:600;
+    filter:
+        drop-shadow(
+            0 0 15px #ff1588
+        );
+}
+
+.piece.left{
+    clip-path:polygon(
+        50% 100%,
+        0 55%,
+        0 20%,
+        12% 5%,
+        30% 0,
+        45% 8%,
+        50% 20%
+    );
+
+    animation:leftBreak 1.2s forwards;
+}
+
+.piece.right{
+    clip-path:polygon(
+        50% 100%,
+        100% 55%,
+        100% 20%,
+        88% 5%,
+        70% 0,
+        55% 8%,
+        50% 20%
+    );
+
+    animation:rightBreak 1.2s forwards;
+}
+
+@keyframes leftBreak{
+    to{
+        transform:
+            translate(-90px,260px)
+            rotate(-100deg);
+        opacity:0;
+    }
+}
+
+@keyframes rightBreak{
+    to{
+        transform:
+            translate(90px,270px)
+            rotate(90deg);
+        opacity:0;
+    }
+}
+
+
+/* FALLING HEARTS */
+
+.fall{
+    position:fixed;
+    width:18px;
+    height:18px;
+    background:#ff278f;
+    transform:rotate(-45deg);
+    z-index:700;
+    animation:
+        fall 2.5s linear forwards;
+}
+
+.fall:before,
+.fall:after{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:#ff278f;
+    border-radius:50%;
+}
+
+.fall:before{
+    top:-9px;
+}
+
+.fall:after{
+    left:9px;
+}
+
+@keyframes fall{
+    to{
+        transform:
+            translateY(110vh)
+            rotate(320deg);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+
+<!-- QUESTION -->
+
+<section id="question">
+
+    <div class="box">
+
+        <h1>
+            Do you love me?
+        </h1>
+
+        <p>
+            Be honest with me.
+        </p>
+
+        <button
+            class="btn"
+            id="yes">
+            YES
+        </button>
+
+        <button
+            class="btn"
+            id="no">
+            NO
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- GAME -->
+
+<section id="game">
+
+    <div class="title">
+        I LOVE YOU
+    </div>
+
+    <div class="instruction">
+        Aim the arrow at the heart
+    </div>
+
+    <div id="heart"></div>
+
+    <div id="aim"></div>
+
+    <div id="line"></div>
+
+
+    <div id="bow">
+
+        <div class="bowcurve"></div>
+
+        <div class="bowtip top"></div>
+
+        <div class="bowtip bottom"></div>
+
+        <div id="arrow"></div>
+
+    </div>
+
+
+    <div id="shootWrap">
+
+        <button
+            class="btn"
+            id="shoot">
+            SHOOT
+        </button>
+
+    </div>
+
+
+    <!-- MISS -->
+
+    <div id="miss">
+
+        <h2>
+            YOU MISSED!
+        </h2>
+
+        <p>
+            You didn't catch my heart.
+        </p>
+
+        <button
+            class="btn"
+            id="again">
+            TRY AGAIN
+        </button>
+
+    </div>
+
+
+    <!-- WIN -->
+
+    <div id="win">
+
+        <h2>
+            YOU CAPTURED MY HEART!
+        </h2>
+
+        <p>
+            I LOVE YOU SO MUCH
+        </p>
+
+    </div>
+
+</section>
+
+
+<script>
+"use strict";
+
+
+/* ELEMENTS */
+
+const question =
+    document.getElementById("question");
+
+const game =
+    document.getElementById("game");
+
+const yes =
+    document.getElementById("yes");
+
+const no =
+    document.getElementById("no");
+
+const aim =
+    document.getElementById("aim");
+
+const bow =
+    document.getElementById("bow");
+
+const arrow =
+    document.getElementById("arrow");
+
+const heart =
+    document.getElementById("heart");
+
+const shoot =
+    document.getElementById("shoot");
+
+const miss =
+    document.getElementById("miss");
+
+const again =
+    document.getElementById("again");
+
+const win =
+    document.getElementById("win");
+
+
+let audio = null;
+let aiming = false;
+let shot = false;
+let angle = -Math.PI / 2;
+let noClicks = 0;
+
+
+/* AUDIO */
+
+function startAudio(){
+
+    if(!audio){
+
+        audio =
+            new (
+                window.AudioContext ||
+                window.webkitAudioContext
+            )();
+
+    }
+
+    if(
+        audio.state ===
+        "suspended"
+    ){
+
+        audio.resume();
+
+    }
+
+}
+
+
+function missSound(){
+
+    startAudio();
+
+    const now =
+        audio.currentTime;
+
+    const osc =
+        audio.createOscillator();
+
+    const gain =
+        audio.createGain();
+
+    osc.type =
+        "triangle";
+
+    osc.frequency.setValueAtTime(
+        550,
+        now
+    );
+
+    osc.frequency.exponentialRampToValueAtTime(
+        170,
+        now + .3
+    );
+
+    gain.gain.setValueAtTime(
+        .001,
+        now
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .16,
+        now + .03
+    );
+
+    gain.gain.exponentialRampToValueAtTime(
+        .001,
+        now + .35
+    );
+
+    osc.connect(gain);
+    gain.connect(audio.destination);
+
+    osc.start(now);
+    osc.stop(now + .36);
+}
+
+
+function hitSound(){
+
+    startAudio();
+
+    const notes =
+        [523,659,784,1047];
+
+    notes.forEach(
+        function(freq,i){
+
+            const osc =
+                audio.createOscillator();
+
+            const gain =
+                audio.createGain();
+
+            const start =
+                audio.currentTime +
+                i * .1;
+
+            osc.type =
+                "sine";
+
+            osc.frequency.value =
+                freq;
+
+            gain.gain.setValueAtTime(
+                .001,
+                start
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .16,
+                start + .025
+            );
+
+            gain.gain.exponentialRampToValueAtTime(
+                .001,
+                start + .38
+            );
+
+            osc.connect(gain);
+            gain.connect(audio.destination);
+
+            osc.start(start);
+            osc.stop(start + .4);
+
+        }
+    );
+}
+
+
+/* YES */
+
+yes.addEventListener(
+    "click",
+    function(){
+
+        startAudio();
+
+        question.style.display =
+            "none";
+
+        game.style.display =
+            "block";
+
+    }
+);
+
+
+/* NO = YES GETS BIGGER */
+
+no.addEventListener(
+    "click",
+    function(){
+
+        noClicks++;
+
+        const size =
+            1 +
+            noClicks * .35;
+
+        yes.style.transform =
+            "scale(" +
+            size +
+            ")";
+
+
+        if(noClicks === 1){
+
+            no.textContent =
+                "Are you sure?";
+
+        }
+        else if(noClicks === 2){
+
+            no.textContent =
+                "Really?";
+
+        }
+        else if(noClicks === 3){
+
+            no.textContent =
+                "Think again";
+
+        }
+        else{
+
+            no.textContent =
+                "Just say YES";
+
+        }
+
+    }
+);
+
+
+/* BOW CENTER */
+
+function center(){
+
+    return {
+
+        x:
+            window.innerWidth / 2 - 30,
+
+        y:
+            window.innerHeight * .86
+
+    };
+
+}
+
+
+/* AIM */
+
+function aimAt(x,y){
+
+    if(shot)
+        return;
+
+    const c =
+        center();
+
+    const dx =
+        x - c.x;
+
+    const dy =
+        y - c.y;
+
+    const distance =
+        Math.sqrt(
+            dx*dx +
+            dy*dy
+        );
+
+    if(distance < 15)
+        return;
+
+    angle =
+        Math.atan2(
+            dy,
+            dx
+        );
+
+
+    /*
+      The whole bow + arrow
+      rotates together.
+    */
+
+    bow.style.transform =
+        "translateX(-50%) rotate(" +
+        angle +
+        "rad)";
+
+}
+
+
+/* TOUCH */
+
+aim.addEventListener(
+    "touchstart",
+    function(e){
+
+        e.preventDefault();
+
+        aiming = true;
+
+        const t =
+            e.touches[0];
+
+        aimAt(
+            t.clientX,
+            t.clientY
+        );
+
+    },
+    {passive:false}
+);
+
+
+aim.addEventListener(
+    "touchmove",
+    function(e){
+
+        e.preventDefault();
+
+        if(!aiming)
+            return;
+
+        const t =
+            e.touches[0];
+
+        aimAt(
+            t.clientX,
+            t.clientY
+        );
+
+    },
+    {passive:false}
+);
+
+
+aim.addEventListener(
+    "touchend",
+    function(){
+
+        aiming = false;
+
+    }
+);
+
+
+/* MOUSE */
+
+aim.addEventListener(
+    "mousedown",
+    function(e){
+
+        aiming = true;
+
+        aimAt(
+            e.clientX,
+            e.clientY
+        );
+
+    }
+);
+
+
+window.addEventListener(
+    "mousemove",
+    function(e){
+
+        if(aiming){
+
+            aimAt(
+                e.clientX,
+                e.clientY
+            );
+
+        }
+
+    }
+);
+
+
+window.addEventListener(
+    "mouseup",
+    function(){
+
+        aiming = false;
+
+    }
+);
+
+
+/* SHOOT */
+
+shoot.addEventListener(
+    "click",
+    function(){
+
+        if(shot)
+            return;
+
+        shot = true;
+
+        startAudio();
+
+
+        const c =
+            center();
+
+        const r =
+            heart.getBoundingClientRect();
+
+        const hx =
+            r.left +
+            r.width / 2;
+
+        const hy =
+            r.top +
+            r.height / 2;
+
+
+        const dx =
+            Math.cos(angle);
+
+        const dy =
+            Math.sin(angle);
+
+
+        const vx =
+            hx - c.x;
+
+        const vy =
+            hy - c.y;
+
+
+        const projection =
+            vx * dx +
+            vy * dy;
+
+
+        const closestX =
+            c.x +
+            dx * projection;
+
+        const closestY =
+            c.y +
+            dy * projection;
+
+
+        const distance =
+            Math.sqrt(
+
+                Math.pow(
+                    hx - closestX,
+                    2
+                )
+
+                +
+
+                Math.pow(
+                    hy - closestY,
+                    2
+                )
+
+            );
+
+
+        const hit =
+            projection > 0 &&
+            projection < 800 &&
+            distance < 75;
+
+
+        arrow.style.transition =
+            "transform .8s linear";
+
+        arrow.style.transform =
+            "translateX(700px)";
+
+
+        setTimeout(
+            function(){
+
+                if(hit){
+
+                    winGame();
+
+                }
+                else{
+
+                    loseGame();
+
+                }
+
+            },
+            850
+        );
+
+    }
+);
+
+
+/* WIN */
+
+function winGame(){
+
+    hitSound();
+
+
+    const r =
+        heart.getBoundingClientRect();
+
+
+    const left =
+        document.createElement("div");
+
+    const right =
+        document.createElement("div");
+
+
+    left.className =
+        "piece left";
+
+    right.className =
+        "piece right";
+
+
+    left.style.left =
+        r.left + "px";
+
+    left.style.top =
+        r.top + "px";
+
+
+    right.style.left =
+        r.left + "px";
+
+    right.style.top =
+        r.top + "px";
+
+
+    document.body.appendChild(left);
+    document.body.appendChild(right);
+
+
+    heart.style.display =
+        "none";
+
+
+    setTimeout(
+        function(){
+
+            win.style.display =
+                "flex";
+
+            fallingHearts();
+
+        },
+        550
+    );
+
+}
+
+
+/* MISS */
+
+function loseGame(){
+
+    missSound();
+
+    miss.style.display =
+        "flex";
+
+}
+
+
+/* TRY AGAIN */
+
+again.addEventListener(
+    "click",
+    function(){
+
+        miss.style.display =
+            "none";
+
+        shot = false;
+
+        angle =
+            -Math.PI / 2;
+
+        arrow.style.transition =
+            "none";
+
+        arrow.style.transform =
+            "none";
+
+        bow.style.transform =
+            "translateX(-50%) rotate(-90deg)";
+
+    }
+);
+
+
+/* FALLING HEARTS */
+
+function fallingHearts(){
+
+    for(
+        let i = 0;
+        i < 45;
+        i++
+    ){
+
+        setTimeout(
+            function(){
+
+                const h =
+                    document.createElement("div");
+
+                h.className =
+                    "fall";
+
+                h.style.left =
+                    Math.random()*100 +
+                    "vw";
+
+                h.style.top =
+                    "-30px";
+
+                h.style.animationDuration =
+                    (
+                        1.5 +
+                        Math.random()*2
+                    ) +
+                    "s";
+
+                document.body.appendChild(h);
+
+                setTimeout(
+                    function(){
+                        h.remove();
+                    },
+                    4000
+                );
+
+            },
+            i * 60
+        );
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
